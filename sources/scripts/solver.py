@@ -17,7 +17,6 @@ def main() -> None:
         a,b,p = c_oracle.getPartOne(digits)
         
 
-        logging.debug(f"Starting bruteforce approach, parameters:")
         logging.debug(f"{a = }; {b = }; {p = };")
         result = s_oracle.getRes(a, b, p)
         logging.debug(f"Result: {result}")
@@ -27,7 +26,6 @@ def main() -> None:
         c_oracle.send(result)
         a,b,p = c_oracle.getPartTwo()
 
-        logging.debug(f"Starting bruteforce approach, parameters:")
         logging.debug(f"{a = }; {b = }; {p = };")
         result = s_oracle.getRes(a, b, p)
         logging.debug(f"Result: {result}")

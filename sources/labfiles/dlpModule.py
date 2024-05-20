@@ -1,4 +1,7 @@
 from ctypes import CDLL, c_uint64
+import time
+
+VERBOSE = True
 
 class DLPSolver:
     def __init__(self):
@@ -31,7 +34,13 @@ class DLPSolver:
         return lib
     
     def dlp_bruteforce(self, a:int, b:int, p:int) -> int:
-        return self.lib.dlp_bruteforce(a, b, p)
-    
+        start = time.time()
+        res = self.lib.dlp_bruteforce(a, b, p)
+        if VERBOSE: print(f"Time taken to solve: {time.time() - start}")
+        return res
+
     def dlp_sph(self, a:int, b:int, p:int) -> int:
-        return self.lib.dlp_sph(a, b, p)
+        start = time.time()
+        res = self.lib.dlp_sph(a, b, p)
+        if VERBOSE: print(f"Time taken to solve: {time.time() - start}")
+        return res

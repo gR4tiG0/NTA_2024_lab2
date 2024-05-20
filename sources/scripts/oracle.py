@@ -22,10 +22,11 @@ class CustomFormatter(logging.Formatter):
         return formatter.format(record)
 
 logger = logging.getLogger(__name__)
+logger.propagate = False
 console_handler = logging.StreamHandler()
 console_handler.setFormatter(CustomFormatter())
 logger.addHandler(console_handler)
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.INFO) #change to DEBUG for full out
 
 logging.getLogger('pwnlib').setLevel(logging.CRITICAL)
 
@@ -68,7 +69,7 @@ class CliOracle:
 
     def getPartTwo(self) -> list:
         if self.state != STEP_TWO:
-            logger.error("Invalid state")
+            logger.error(f"Invalid state {self.state}")
             return []
         
         logger.info(f"Starting Task 2")
@@ -97,25 +98,27 @@ class CliOracle:
         self.r.sendline(str(res).encode())
         inp = self.r.recvline()
         if self.ok_word not in inp.decode():
-            logger.error(f"Oracle failed to validate SPH result")
+            logger.error(inp.decode())
+            logger.error(f"Oracle failed to validate result")
             exit(1)
         
-        logger.debug(f"Oracle validated SPH result")
+        logger.info(f"Oracle validated result\n")
         self.state = self.part
 
 
 
 class ServOracle:
     def __init__(self):
-        self.command = ['docker', 'run', '--rm', '-i', 'nta_lab2']
+        self.command = ['docker', 'run', '--rm', '-i', 'gratigo/nta_lab2']
     
     def getRes(self, a:int, b:int, p:int, mode:str="SPH") -> int:
         r = process(self.command)
+        logger.info(f"Started solving")
         r.sendlineafter(b'> ', mode.encode())
         r.sendlineafter(b'a = ', str(a).encode())
         r.sendlineafter(b'b = ', str(b).encode())
         r.sendlineafter(b'p = ', str(p).encode())
-        logger.info(r.recvline().decode())  
-        res = int(r.recvline().decode().split(" = ")[1])    
+        logger.info(r.recvline().decode().strip())
+        res = int(r.recvline().decode().split(" = ")[1])      
         r.close()
         return res

@@ -115,6 +115,7 @@ class ServOracle:
         r.sendlineafter(b'a = ', str(a).encode())
         r.sendlineafter(b'b = ', str(b).encode())
         r.sendlineafter(b'p = ', str(p).encode())
-        res = int(r.recvline().decode().split(" = ")[1])      
+        logger.info(r.recvline().decode())  
+        res = int(r.recvline().decode().split(" = ")[1])    
         r.close()
         return res

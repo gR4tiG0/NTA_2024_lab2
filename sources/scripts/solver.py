@@ -3,7 +3,7 @@ from ctypes import CDLL, c_uint64
 import logging
 from oracle import CliOracle, ServOracle
 
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.INFO)
 
 
 LIB_NAME = "./libdlp.so"
@@ -11,7 +11,7 @@ LIB_NAME = "./libdlp.so"
 def main() -> None:
     c_oracle = CliOracle()
     s_oracle = ServOracle()
-    for digits in range(3, 12):
+    for digits in range(9, 15):
         c_oracle.start()
             
         a,b,p = c_oracle.getPartOne(digits)
